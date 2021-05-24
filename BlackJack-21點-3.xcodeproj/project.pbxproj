@@ -7,15 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9ACA223F265B882800A0A172 /* GameOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACA223E265B882800A0A172 /* GameOverViewController.swift */; };
+		9ACA2242265B8A5200A0A172 /* gameover.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9ACA2241265B8A5200A0A172 /* gameover.mp3 */; };
 		9AE217AA265B4CE200D7B14E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE217A9265B4CE200D7B14E /* AppDelegate.swift */; };
 		9AE217AC265B4CE200D7B14E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE217AB265B4CE200D7B14E /* SceneDelegate.swift */; };
 		9AE217AE265B4CE200D7B14E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE217AD265B4CE200D7B14E /* ViewController.swift */; };
 		9AE217B1265B4CE200D7B14E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AE217AF265B4CE200D7B14E /* Main.storyboard */; };
 		9AE217B3265B4CE200D7B14E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AE217B2265B4CE200D7B14E /* Assets.xcassets */; };
 		9AE217B6265B4CE200D7B14E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AE217B4265B4CE200D7B14E /* LaunchScreen.storyboard */; };
+		9AE217C0265B5B8600D7B14E /* cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE217BF265B5B8600D7B14E /* cards.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9ACA223E265B882800A0A172 /* GameOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
+		9ACA2241265B8A5200A0A172 /* gameover.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameover.mp3; sourceTree = "<group>"; };
 		9AE217A6265B4CE200D7B14E /* BlackJack-21點-3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BlackJack-21點-3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AE217A9265B4CE200D7B14E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9AE217AB265B4CE200D7B14E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +29,7 @@
 		9AE217B2265B4CE200D7B14E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AE217B5265B4CE200D7B14E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9AE217B7265B4CE200D7B14E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9AE217BF265B5B8600D7B14E /* cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cards.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +66,9 @@
 				9AE217AB265B4CE200D7B14E /* SceneDelegate.swift */,
 				9AE217AD265B4CE200D7B14E /* ViewController.swift */,
 				9AE217AF265B4CE200D7B14E /* Main.storyboard */,
+				9ACA223E265B882800A0A172 /* GameOverViewController.swift */,
+				9AE217BF265B5B8600D7B14E /* cards.swift */,
+				9ACA2241265B8A5200A0A172 /* gameover.mp3 */,
 				9AE217B2265B4CE200D7B14E /* Assets.xcassets */,
 				9AE217B4265B4CE200D7B14E /* LaunchScreen.storyboard */,
 				9AE217B7265B4CE200D7B14E /* Info.plist */,
@@ -124,6 +133,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9ACA2242265B8A5200A0A172 /* gameover.mp3 in Resources */,
 				9AE217B6265B4CE200D7B14E /* LaunchScreen.storyboard in Resources */,
 				9AE217B3265B4CE200D7B14E /* Assets.xcassets in Resources */,
 				9AE217B1265B4CE200D7B14E /* Main.storyboard in Resources */,
@@ -140,6 +150,8 @@
 				9AE217AE265B4CE200D7B14E /* ViewController.swift in Sources */,
 				9AE217AA265B4CE200D7B14E /* AppDelegate.swift in Sources */,
 				9AE217AC265B4CE200D7B14E /* SceneDelegate.swift in Sources */,
+				9AE217C0265B5B8600D7B14E /* cards.swift in Sources */,
+				9ACA223F265B882800A0A172 /* GameOverViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
