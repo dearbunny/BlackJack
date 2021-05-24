@@ -17,8 +17,11 @@ class ViewController: UIViewController {
     // 籌碼
     @IBOutlet weak var playerChipLabel: UILabel!
     // 點數
-    @IBOutlet weak var playerScoreLabel: UILabel!
     @IBOutlet weak var bankerScoreLabel: UILabel!
+    @IBOutlet weak var playerScoreLabel: UILabel!
+    @IBOutlet weak var bankerScoreBG: UIImageView!
+    @IBOutlet weak var playerScoreBG: UIImageView!
+    
     // 發牌
     @IBOutlet weak var dealButton: UIButton!
     // 要牌
@@ -68,6 +71,12 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         speech(_sender: "welcome to black jack, let's play")
+        alertTextLabel.text = "請先下注！"
+        bankerScoreBG.isHidden = true
+        playerScoreBG.isHidden = true
+        giveUpButton.isHidden = true
+        hitButton.isHidden = true
+        openButton.isHidden = true
     }
     
     // 顯示蓋牌
@@ -83,14 +92,17 @@ class ViewController: UIViewController {
     @IBAction func seeCard(_ sender: Any) {
         playerCards[0].isHighlighted = true
         playerScoreLabel.isHidden = false
+        playerScoreBG.isHidden = false
         UIView.transition(with: playerCards[0], duration: 0.2, options: .transitionFlipFromRight, animations: nil, completion: nil)
         
         hitButton.isEnabled = true
         if playerScore >= 15{
             openButton.isEnabled = true
-            alertTextLabel.isHidden = true
+            //alertTextLabel.isHidden = true
+            alertTextLabel.text = ""
         }else{
-            alertTextLabel.isHidden = false
+            //alertTextLabel.isHidden = false
+            alertTextLabel.text = "當你的點數低於15點時,你不能打開"
         }
     }
     
@@ -98,6 +110,11 @@ class ViewController: UIViewController {
     
     // Deal 發牌
     @IBAction func deal(_ sender: Any) {
+        giveUpButton.isHidden = false
+        hitButton.isHidden = false
+        openButton.isHidden = false
+        alertTextLabel.text = ""
+        
         if playerChip >= bet{
             playerCloseCard = cards[distribution.nextInt()]
             playerOpenedCard = cards[distribution.nextInt()]
@@ -127,6 +144,8 @@ class ViewController: UIViewController {
             bankerScore += scoreCal(card: bankerOpenedCard)
             bankerScoreLabel.text = "\(bankerScore)"
             bankerScoreLabel.isHidden = false
+            bankerScoreBG.isHidden = false
+            //playerScoreBG.isHidden = false
             
             dealButton.isEnabled = false
             openFoldCardButton.isEnabled = true
@@ -184,9 +203,11 @@ class ViewController: UIViewController {
         
         if playerScore >= 15{
             openButton.isEnabled = true
-            alertTextLabel.isHidden = true
+            //alertTextLabel.isHidden = true
+            alertTextLabel.text = ""
         }else {
-            alertTextLabel.isHidden = false
+            //alertTextLabel.isHidden = false
+            alertTextLabel.text = "當你的點數低於15點時,你不能打開"
         }
         if playerScore == 21{
             hitButton.isEnabled = false
@@ -196,7 +217,7 @@ class ViewController: UIViewController {
         if (count == 5 && playerScore <= 21) && !(bankerTotalScore == 21){
             fiveCardTrick()
         }else if (count == 5 && playerScore <= 21) && (bankerTotalScore == 21){
-            comBlackJack()
+            bankerBlackJack()
         }else if playerScore > 21{
             bust()
         }
@@ -242,7 +263,7 @@ class ViewController: UIViewController {
         
         if bankerTotalScore == 21 && cCards.count == 2{
             bankerScoreLabel.text = "\(bankerTotalScore)"
-            comBlackJack()
+            bankerBlackJack()
         }else if playerScore == 21 && pCards.count <= 2{
             playerBlackJack()
         }else if bankerTotalScore > 21 || playerScore > bankerTotalScore{
@@ -252,7 +273,7 @@ class ViewController: UIViewController {
         }else if bankerTotalScore == playerScore{
             tie()
         }else if count == 5 && bankerTotalScore < 21{
-            comFiveCardTrick()
+            bankerFiveCardTrick()
         }
     }
     
@@ -271,13 +292,13 @@ class ViewController: UIViewController {
     @IBAction func plusBetBtnPressed(_ sender: Any) {
         if bet >= 100 && bet < 300{
             bet += 100
-            betLabel.text = "Bet: \(bet)"
+            betLabel.text = "\(bet)"
         }
     }
     @IBAction func minusBetBtnPressed(_ sender: Any) {
         if bet > 100 && bet <= 300{
             bet -= 100
-            betLabel.text = "Bet: \(bet)"
+            betLabel.text = "\(bet)"
         }
     }
     
@@ -308,8 +329,10 @@ class ViewController: UIViewController {
         playerScore = 0
         bankerScoreLabel.text = "0"
         bankerScoreLabel.isHidden = true
+        bankerScoreBG.isHidden = true
         playerScoreLabel.text = "0"
         playerScoreLabel.isHidden = true
+        playerScoreBG.isHidden = true
         pCards.removeAll()
         cCards.removeAll()
         
@@ -328,9 +351,11 @@ class ViewController: UIViewController {
         bankerAceCount = 0
         
         bet = 100
-        betLabel.text = "Bet: \(bet)"
+        betLabel.text = "\(bet)" //Bet: 
         plusBetBtn.isHidden = false
         minusBetBtn.isHidden = false
+        
+        alertTextLabel.text = "請先下注！"
     }
     
     // 各種牌面情況
@@ -341,54 +366,57 @@ class ViewController: UIViewController {
     func bust () {
         playerCards[0].image = UIImage(named: playerCloseCard)
         UIView.transition(with: playerCards[0], duration: 0.2, options: .transitionFlipFromRight, animations: nil, completion: nil)
-        let controller = UIAlertController(title: "爆了！", message: "Lost \(bet)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let controller = UIAlertController(title: "爆了！", message: "扣除 \(bet)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip -= bet
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: controller.title!)
     }
     
+    // 平手
     func tie () {
-        let controller = UIAlertController(title: "Tie", message: "Lost \(bet)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let controller = UIAlertController(title: "平手", message: "Lost \(bet)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip -= bet
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: controller.title!)
     }
     
+    // 五張卡
     func fiveCardTrick () {
         playerCards[0].image = UIImage(named: playerCloseCard)
         UIView.transition(with: playerCards[0], duration: 0.2, options: .transitionFlipFromRight, animations: nil, completion: nil)
         let controller = UIAlertController(title: "Five cards trick", message: "Won \(bet * 2)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip += (bet * 2)
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: controller.title!)
     }
     
+    // 輸了
     func lose () {
         let controller = UIAlertController(title: "你輸了！", message: "Lost \(bet)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip -= bet
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: controller.title!)
     }
     
     func win () {
         let controller = UIAlertController(title: "你贏了！", message: "Won \(bet)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip += bet
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: controller.title!)
     }
     
@@ -396,53 +424,53 @@ class ViewController: UIViewController {
         playerCards[0].image = UIImage(named: playerCloseCard)
         UIView.transition(with: playerCards[0], duration: 0.5, options: .transitionFlipFromRight, animations: nil, completion: nil)
         let controller = UIAlertController(title: "Black Jack", message: "Won \(bet * 2)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip += (bet * 2)
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: controller.title!)
     }
     
-    func comBlackJack () {
+    func bankerBlackJack () {
         bankerCards[0].image = UIImage(named: bankerCloseCard)
         UIView.transition(with: bankerCards[0], duration: 0.2, options: .transitionFlipFromRight, animations: nil, completion: nil)
         bankerScoreLabel.text = "\(bankerTotalScore)"
         let controller = UIAlertController(title: "Com Black Jack", message: "Lost \(bet * 2)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip -= (bet * 2)
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: "computer black jack")
     }
     
-    func comFiveCardTrick () {
+    func bankerFiveCardTrick () {
         bankerCards[0].image = UIImage(named: bankerCloseCard)
         UIView.transition(with: bankerCards[0], duration: 0.2, options: .transitionFlipFromRight, animations: nil, completion: nil)
         bankerScoreLabel.text = "\(bankerTotalScore)"
         let controller = UIAlertController(title: "Com five cards trick", message: "Lost \(bet * 2)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip -= (bet * 2)
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: "computer five cards trick")
     }
     
     func giveUp () {
-        let controller = UIAlertController(title: "Give up", message: "Lost \(bet / 2)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let controller = UIAlertController(title: "投降", message: "Lost \(bet / 2)! Score: \(playerScore)", preferredStyle: UIAlertController.Style.alert)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip -= (bet / 2)
-        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        playerChipLabel.text = "\(playerChip)" //你的籌碼：
         speech(_sender: controller.title!)
     }
     
     func noEnougnMoney () {
         let controller = UIAlertController(title: "籌碼不足", message: "You can't bet more than you have!", preferredStyle: UIAlertController.Style.alert)
-        let action = UIAlertAction(title: "Next", style: UIAlertAction.Style.default, handler: nextHandler)
+        let action = UIAlertAction(title: "下一局", style: UIAlertAction.Style.default, handler: nextHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         speech(_sender: controller.title!)
@@ -481,7 +509,7 @@ class ViewController: UIViewController {
         return score
     }
     
-    // speech
+    // speech 語音
     func speech(_sender: String){
         let speechUtterence = AVSpeechUtterance(string: _sender)
         let synth = AVSpeechSynthesizer()
